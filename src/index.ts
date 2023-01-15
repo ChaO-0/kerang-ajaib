@@ -11,6 +11,19 @@ app.use(
   })
 );
 
+const leaveGroup = async (groupId: string) => {
+  await axios.post(
+    `https://api.line.me/v2/bot/group/${groupId}/leave`,
+    {},
+    {
+      headers: {
+        Authorization:
+          'Bearer BNEwKTIQ2oA5UHrdir7mQV9GOwDVFG6LX0ReYTPDaqKx7M3IiE8WYq/c64yw2S8WRffv9/orAuEV9H3TkMEfOlMV3aHJA2yhTqzkZpoYPl6pJz9hTezYXQ2jUyMvDMak9z6xwgJm9LCVFENDFvy8+AdB04t89/1O/w1cDnyilFU=',
+      },
+    }
+  );
+};
+
 const reply = async (message: string, replyToken: string) => {
   await axios.post(
     'https://api.line.me/v2/bot/message/reply',
@@ -83,8 +96,16 @@ app.post('/webhook', async (req, res) => {
         await reply('Apakah apaan anjing, tanya yg bener', event.replyToken);
       }
 
+      if (text === 'apakah kerang antek yana sugosha') {
+        await reply('Wadoo ketauan', event.replyToken);
+        await leaveGroup(event.source.groupId);
+      }
       if (text.includes('gustu') && text.includes('ganteng')) {
         await reply('Dan keren', event.replyToken);
+      }
+
+      if (text.includes('gustu') && text.includes('keren')) {
+        await reply('Dan ganteng', event.replyToken);
       }
 
       if (text.includes('yana') && text.includes('gek esa')) {
