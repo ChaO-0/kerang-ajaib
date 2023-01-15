@@ -14,6 +14,39 @@ app.use(
 app.post('/webhook', async (req, res) => {
   console.log(JSON.stringify(req.body));
 
+  const events = req.body.events;
+
+  events.map(async (event: any) => {
+    if (event.type === 'join') {
+      await axios.post(
+        'https://api.line.me/v2/bot/message/reply',
+        {
+          replyToken: req.body.events[0].replyToken,
+          messages: [
+            {
+              type: 'text',
+              text: 'Terima kasih kepada admin grup Yana Sugosha sudah membiarkan saya join ke grup ini',
+            },
+            {
+              type: 'text',
+              text: 'Semoga kelak bisa bersatu dengan gek esa,',
+            },
+            {
+              type: 'text',
+              text: 'Mari kita doakan teman teman, AMIN',
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization:
+              'Bearer BNEwKTIQ2oA5UHrdir7mQV9GOwDVFG6LX0ReYTPDaqKx7M3IiE8WYq/c64yw2S8WRffv9/orAuEV9H3TkMEfOlMV3aHJA2yhTqzkZpoYPl6pJz9hTezYXQ2jUyMvDMak9z6xwgJm9LCVFENDFvy8+AdB04t89/1O/w1cDnyilFU=',
+          },
+        }
+      );
+    }
+  });
+
   if (req.body.events[0].type === 'message') {
     await axios.post(
       'https://api.line.me/v2/bot/message/reply',
